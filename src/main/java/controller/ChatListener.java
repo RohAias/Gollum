@@ -22,6 +22,7 @@ public class ChatListener extends ListenerAdapter {
         commands.add(new CHelp("/help"));
     }
 
+    //Outputs at the start of bot
     @Override
     public void onReady(ReadyEvent event) {
         System.out.println("Gollum Ready");
