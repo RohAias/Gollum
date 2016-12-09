@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ChatListener extends ListenerAdapter {
     List<Command> commands;
 
@@ -25,6 +26,13 @@ public class ChatListener extends ListenerAdapter {
     public void onReady(ReadyEvent event) {
         System.out.println("Gollum Ready");
     }
+
+    /**
+     * Enables the bot to read text input including:
+     * -Author of the message.
+     * -Which channel text was entered in.
+     * -Contents of the message.
+     */
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -50,6 +58,11 @@ public class ChatListener extends ListenerAdapter {
 
             System.out.printf("[GRP: %s]<%s>: %s\n", groupName,
                     author.getName(), msg);
+        }
+
+        //Where we want to call /help command.
+        if (msg.contains("/help")) {
+
         }
     }
 }
