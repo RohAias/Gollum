@@ -1,5 +1,7 @@
 package model.commands;
 
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
 /**
  * A structure for a basic command.
  */
@@ -37,7 +39,7 @@ public abstract class Command {
     /**
      * Executes this command
      */
-    public abstract void execute(String message);
+    public abstract void execute(MessageReceivedEvent event);
 
     public Command(String name, String trigger) {
         this.name = name;

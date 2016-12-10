@@ -1,5 +1,7 @@
 package model.commands;
 
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+
 public class CHelp extends Command {
 
     public CHelp(String trigger) {
@@ -8,10 +10,13 @@ public class CHelp extends Command {
         setUsage("/help::List the available commands.");
     }
 
-    public void execute(String message) {
-        /*
-         * Respond with a list of available commands.
-         */
+    /**
+     * Respond with a list of available commands.
+     *
+     * @param event the event that triggered this command
+     */
+    public void execute(MessageReceivedEvent event) {
+        // TODO set the response and respond to the user.
         setResponse("");
     }
 }
