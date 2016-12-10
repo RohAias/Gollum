@@ -1,4 +1,4 @@
-package model.commands;
+package model;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 

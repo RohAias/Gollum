@@ -1,17 +1,35 @@
 package model.commands;
 
-public class CHelp extends Command {
+import model.Command;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-    public CHelp(String trigger) {
+import java.util.List;
+
+public class CHelp extends Command {
+    private List<Command> commands;
+
+    public CHelp(String trigger, List<Command> commands) {
         super("CHelp", trigger);
+        this.commands = commands;
 
         setUsage("/help::List the available commands.");
     }
 
-    public void execute(String message) {
-        /*
-         * Respond with a list of available commands.
-         */
-        setResponse("");
+    /**
+     * Respond with a list of available commands.
+     *
+     * @param event the event that triggered this command
+     */
+    public void execute(MessageReceivedEvent event) {
+        String response = "";
+
+        for (int i = 0; i < commands.size(); i++) {
+            Command currentCommand = commands.get(i);
+            String usage = currentCommand.getUsage();
+
+            response = response + '\n' + usage;
+        }
+
+        setResponse("```" + response + "```");
     }
 }

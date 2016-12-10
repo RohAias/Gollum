@@ -1,7 +1,8 @@
 package controller;
 
+import model.Command;
 import model.commands.CHelp;
-import model.commands.Command;
+import model.commands.CPing;
 import net.dv8tion.jda.client.entities.Group;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.ReadyEvent;
@@ -10,60 +11,77 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class ChatListener extends ListenerAdapter {
-    List<Command> commands;
+    private static final Logger L = Logger.getLogger(ChatListener.class.getName());
+    private List<Command> commands;
 
     public ChatListener() {
         commands = new ArrayList<>();
 
         // Add all of the active commands
-        commands.add(new CHelp("/help"));
+        commands.add(new CHelp("/help", commands));
+        commands.add(new CPing("/ping"));
     }
 
-    //Outputs at the start of bot
     @Override
     public void onReady(ReadyEvent event) {
-        System.out.println("Gollum Ready");
+        L.info("ChatListener is enabled.");
     }
 
     /**
-     * Enables the bot to read text input including:
-     * -Author of the message.
-     * -Which channel text was entered in.
-     * -Contents of the message.
+     * Handle all commands for the bot
      */
-
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        logMessage(event);
+
+        String message = event.getMessage().getContent();
+        for (int i = 0; i < commands.size(); i++) {
+            Command c = commands.get(i);
+
+            if (message.equals(c.getTrigger())) {
+                c.execute(event);
+                if (c.getResponse() != null)
+                    System.out.println();// TODO send response
+            }
+        }
+    }
+
+    private void logMessage(MessageReceivedEvent event) {
         User author = event.getAuthor();
         Message message = event.getMessage();
-        MessageChannel channel = event.getChannel();
         String msg = message.getContent();
 
         if (event.isFromType(ChannelType.TEXT)) {
-            Guild guild = event.getGuild();
             TextChannel textChannel = event.getTextChannel();
             Member member = event.getMember();
             String name = member.getEffectiveName();
 
-            System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(),
-                    textChannel.getName(), name, msg);
+            L.info(String.format("[%-5s][%-18s]<%s>: %s\n",
+                    "CHAN",
+                    textChannel.getName(),
+                    name,
+                    msg)
+            );
         } else if (event.isFromType(ChannelType.PRIVATE)) {
 
-            System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
+            L.info(String.format("[%-5s]<%s>: %s\n",
+                    "PRIV",
+                    author.getName(),
+                    msg));
+
         } else if (event.isFromType(ChannelType.GROUP)) {
             Group group = event.getGroup();
             String groupName = group.getName() != null ? group.getName() : "";
 
-            System.out.printf("[GRP: %s]<%s>: %s\n", groupName,
-                    author.getName(), msg);
-        }
-
-        //Where we want to call /help command.
-        if (msg.contains("/help")) {
-
+            L.info(String.format("[%-5s][%s]<%s>: %s\n",
+                    "GROUP",
+                    groupName,
+                    author.getName(),
+                    msg));
         }
     }
 }
