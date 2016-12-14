@@ -47,6 +47,22 @@ public abstract class Command {
         this.successful = false;
     }
 
+    /**
+     * Send the response back to the author in a private message
+     *
+     * @param event the event that triggered this action
+     */
+    public void respond(MessageReceivedEvent event) {
+        respond(event, false);
+    }
+
+    public void respond(MessageReceivedEvent event, boolean isChannel) {
+        if (isChannel)
+            event.getChannel().sendMessage(getResponse()).queue();
+        else
+            event.getAuthor().getPrivateChannel().sendMessage(getResponse()).queue();
+    }
+
     public String getName() {
         return name;
     }

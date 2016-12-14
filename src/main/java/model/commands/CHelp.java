@@ -31,5 +31,7 @@ public class CHelp extends Command {
         }
 
         setResponse("```" + response + "```");
+
+        respond(event);
     }
 }

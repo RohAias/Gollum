@@ -44,8 +44,6 @@ public class ChatListener extends ListenerAdapter {
 
             if (message.equals(c.getTrigger())) {
                 c.execute(event);
-                if (c.getResponse() != null)
-                    System.out.println();// TODO send response
             }
         }
     }

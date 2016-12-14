@@ -13,5 +13,7 @@ public class CPing extends Command {
 
     public void execute(MessageReceivedEvent event) {
         setResponse("pong!");
+
+        respond(event);
     }
 }

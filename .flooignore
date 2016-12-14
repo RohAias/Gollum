@@ -4,3 +4,6 @@ tmp
 vendor
 .idea/workspace.xml
 .idea/misc.xml
+/out/
+/target/
+/src/main/resources/settings.properties
