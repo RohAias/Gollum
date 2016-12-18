@@ -18,9 +18,11 @@ public class Gollum {
 
         try {
             jda = new JDABuilder(AccountType.BOT)
-                    .addListener(new ChatListener())
                     .setToken(settings.getProperty("token"))
                     .buildBlocking();
+
+            jda.addEventListener(new ChatListener(jda));
+
             jda.setAutoReconnect(true);
         } catch (LoginException e) {
             System.err.println("Authentication Failed...");
@@ -29,6 +31,7 @@ public class Gollum {
         } catch (RateLimitedException e) {
             System.err.println("Too many Login requests.");
         }
+
     }
 
     private void loadSettings() {

@@ -27,7 +27,8 @@ public class CHelp extends Command {
             Command currentCommand = commands.get(i);
             String usage = currentCommand.getUsage();
 
-            response = response + '\n' + usage;
+            if (usage != null)
+                response = response + '\n' + usage;
         }
 
         setResponse("```" + response + "```");
